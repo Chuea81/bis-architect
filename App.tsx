@@ -1,9 +1,7 @@
-
 import React, { useState, useCallback, useEffect, useMemo } from 'react';
 import PlayerSanctum from './components/PlayerSanctum';
 import DatabaseVault from './components/DatabaseVault';
 import { ArchmageChat } from './components/ArchmageChat';
-import { BetaGate } from './components/BetaGate';
 import { Item, SpecName, RealmType, GameMode, Build, ClassName, ItemStats, StatWeights, Enchant, SavedBuild, RaceName, Gender, TalentTree } from './types';
 import { normalizeSlot, normalizeItem } from './services/gearService';
 import { compressBuild, decompressBuild } from './services/shareService';
@@ -415,102 +413,100 @@ const App: React.FC = () => {
     const toggleTheme = () => setTheme(prev => prev === 'dark' ? 'light' : 'dark');
 
     return (
-        <BetaGate>
-            <div className="flex flex-col lg:flex-row h-screen w-screen overflow-hidden font-roboto text-sm bg-stone-200 dark:bg-[#0e0e10] text-stone-900 dark:text-[#e2e8f0] antialiased selection:bg-[#FFD700] selection:text-black transition-colors duration-300">
-                
-                {/* Theme Toggle (Absolute) */}
-                <button 
-                    onClick={toggleTheme} 
-                    className="fixed top-4 right-4 lg:right-6 z-[60] w-10 h-10 flex items-center justify-center rounded-full bg-white dark:bg-[#1a1a1d] border border-stone-300 dark:border-[#333] shadow-lg hover:scale-110 transition-transform text-xl text-stone-600 dark:text-[#e2e8f0]"
-                    title={`Switch to ${theme === 'dark' ? 'Light' : 'Dark'} Mode`}
-                >
-                    {theme === 'dark' ? '☀️' : '🌙'}
-                </button>
+        <div className="flex flex-col lg:flex-row h-screen w-screen overflow-hidden font-roboto text-sm bg-stone-200 dark:bg-[#0e0e10] text-stone-900 dark:text-[#e2e8f0] antialiased selection:bg-[#FFD700] selection:text-black transition-colors duration-300">
+            
+            {/* Theme Toggle (Absolute) */}
+            <button 
+                onClick={toggleTheme} 
+                className="fixed top-4 right-4 lg:right-6 z-[60] w-10 h-10 flex items-center justify-center rounded-full bg-white dark:bg-[#1a1a1d] border border-stone-300 dark:border-[#333] shadow-lg hover:scale-110 transition-transform text-xl text-stone-600 dark:text-[#e2e8f0]"
+                title={`Switch to ${theme === 'dark' ? 'Light' : 'Dark'} Mode`}
+            >
+                {theme === 'dark' ? '☀️' : '🌙'}
+            </button>
 
-                {/* Left Column: Sanctum (Hidden on Mobile if not active) */}
-                <div className={`${activeMobileTab === 'sanctum' ? 'flex' : 'hidden'} lg:flex flex-col h-full shrink-0 z-10 w-full lg:w-auto transition-colors duration-300`}>
-                    <PlayerSanctum 
-                        equipped={equipped} 
-                        currentClass={currentClass}
-                        setClass={handleClassChange}
-                        currentSpec={spec}
-                        currentRace={race}
-                        setRace={setRace}
-                        currentGender={gender}
-                        setGender={setGender}
-                        currentRealm={realm}
-                        charName={charName}
-                        setCharName={setCharName}
-                        onUnequip={handleUnequip}
-                        onEquip={handleEquip}
-                        onWipe={handleWipe}
-                        onExport={handleExport}
-                        activeBuffs={activeBuffs}
-                        onToggleBuff={handleToggleBuff}
-                        talentStats={combinedTalentStats} // Passing derived stats
-                        setTalentStats={setManualTalentStats} // Passing setter for overrides
-                        selectedTalents={selectedTalents}
-                        setSelectedTalents={setSelectedTalents}
-                        customWeights={customWeights}
-                        setCustomWeights={setCustomWeights}
-                        talentPoints={talentPoints}
-                        setTalentPoints={setTalentPoints}
-                        onApplyEnchant={handleApplyEnchant}
-                        onRemoveEnchant={handleRemoveEnchant}
-                        savedBuilds={savedBuilds}
-                        onSaveBuild={handleSaveBuild}
-                        onLoadBuild={handleLoadBuild}
-                        onDeleteBuild={handleDeleteBuild}
-                    />
-                </div>
-
-                {/* Right Column: Database (Hidden on Mobile if not active) */}
-                <div className={`${activeMobileTab === 'database' ? 'flex' : 'hidden'} lg:flex flex-col flex-grow h-full overflow-hidden transition-colors duration-300`}>
-                    <DatabaseVault 
-                        currentSpec={spec} 
-                        setSpec={setSpec}
-                        currentClass={currentClass}
-                        currentRealm={realm}
-                        setRealm={setRealm}
-                        currentMode={mode}
-                        setMode={setMode}
-                        equipped={equipped}
-                        onEquip={handleEquip}
-                        items={itemDatabase}
-                        onImportDatabase={handleImportDatabase}
-                        onResetDatabase={handleResetDatabase}
-                        customWeights={customWeights[spec]}
-                    />
-                </div>
-
-                {/* Floating Chat Bot */}
-                <ArchmageChat 
-                    equipped={equipped}
+            {/* Left Column: Sanctum (Hidden on Mobile if not active) */}
+            <div className={`${activeMobileTab === 'sanctum' ? 'flex' : 'hidden'} lg:flex flex-col h-full shrink-0 z-10 w-full lg:w-auto transition-colors duration-300`}>
+                <PlayerSanctum 
+                    equipped={equipped} 
                     currentClass={currentClass}
-                    spec={spec}
+                    setClass={handleClassChange}
+                    currentSpec={spec}
+                    currentRace={race}
+                    setRace={setRace}
+                    currentGender={gender}
+                    setGender={setGender}
+                    currentRealm={realm}
+                    charName={charName}
+                    setCharName={setCharName}
+                    onUnequip={handleUnequip}
+                    onEquip={handleEquip}
+                    onWipe={handleWipe}
+                    onExport={handleExport}
                     activeBuffs={activeBuffs}
-                    talentStats={combinedTalentStats}
+                    onToggleBuff={handleToggleBuff}
+                    talentStats={combinedTalentStats} // Passing derived stats
+                    setTalentStats={setManualTalentStats} // Passing setter for overrides
+                    selectedTalents={selectedTalents}
+                    setSelectedTalents={setSelectedTalents}
+                    customWeights={customWeights}
+                    setCustomWeights={setCustomWeights}
+                    talentPoints={talentPoints}
+                    setTalentPoints={setTalentPoints}
+                    onApplyEnchant={handleApplyEnchant}
+                    onRemoveEnchant={handleRemoveEnchant}
+                    savedBuilds={savedBuilds}
+                    onSaveBuild={handleSaveBuild}
+                    onLoadBuild={handleLoadBuild}
+                    onDeleteBuild={handleDeleteBuild}
                 />
-
-                {/* Mobile Bottom Navigation Bar */}
-                <div className="lg:hidden fixed bottom-0 left-0 right-0 h-16 bg-stone-100 dark:bg-[#0e0e10] border-t border-stone-300 dark:border-[#333] flex items-center justify-around z-50 pb-safe transition-colors duration-300">
-                    <button 
-                        onClick={() => setActiveMobileTab('sanctum')}
-                        className={`flex flex-col items-center justify-center w-full h-full transition-colors ${activeMobileTab === 'sanctum' ? 'text-[#b45309] bg-stone-200 dark:bg-[#1a1a1d]' : 'text-stone-500 dark:text-[#666]'}`}
-                    >
-                        <span className="text-xl">🛡️</span>
-                        <span className="text-[9px] font-cinzel font-bold tracking-widest mt-1">PAPERDOLL</span>
-                    </button>
-                    <button 
-                        onClick={() => setActiveMobileTab('database')}
-                        className={`flex flex-col items-center justify-center w-full h-full transition-colors ${activeMobileTab === 'database' ? 'text-[#b45309] bg-stone-200 dark:bg-[#1a1a1d]' : 'text-stone-500 dark:text-[#666]'}`}
-                    >
-                        <span className="text-xl">📚</span>
-                        <span className="text-[9px] font-cinzel font-bold tracking-widest mt-1">DATABASE</span>
-                    </button>
-                </div>
             </div>
-        </BetaGate>
+
+            {/* Right Column: Database (Hidden on Mobile if not active) */}
+            <div className={`${activeMobileTab === 'database' ? 'flex' : 'hidden'} lg:flex flex-col flex-grow h-full overflow-hidden transition-colors duration-300`}>
+                <DatabaseVault 
+                    currentSpec={spec} 
+                    setSpec={setSpec}
+                    currentClass={currentClass}
+                    currentRealm={realm}
+                    setRealm={setRealm}
+                    currentMode={mode}
+                    setMode={setMode}
+                    equipped={equipped}
+                    onEquip={handleEquip}
+                    items={itemDatabase}
+                    onImportDatabase={handleImportDatabase}
+                    onResetDatabase={handleResetDatabase}
+                    customWeights={customWeights[spec]}
+                />
+            </div>
+
+            {/* Floating Chat Bot */}
+            <ArchmageChat 
+                equipped={equipped}
+                currentClass={currentClass}
+                spec={spec}
+                activeBuffs={activeBuffs}
+                talentStats={combinedTalentStats}
+            />
+
+            {/* Mobile Bottom Navigation Bar */}
+            <div className="lg:hidden fixed bottom-0 left-0 right-0 h-16 bg-stone-100 dark:bg-[#0e0e10] border-t border-stone-300 dark:border-[#333] flex items-center justify-around z-50 pb-safe transition-colors duration-300">
+                <button 
+                    onClick={() => setActiveMobileTab('sanctum')}
+                    className={`flex flex-col items-center justify-center w-full h-full transition-colors ${activeMobileTab === 'sanctum' ? 'text-[#b45309] bg-stone-200 dark:bg-[#1a1a1d]' : 'text-stone-500 dark:text-[#666]'}`}
+                >
+                    <span className="text-xl">🛡️</span>
+                    <span className="text-[9px] font-cinzel font-bold tracking-widest mt-1">PAPERDOLL</span>
+                </button>
+                <button 
+                    onClick={() => setActiveMobileTab('database')}
+                    className={`flex flex-col items-center justify-center w-full h-full transition-colors ${activeMobileTab === 'database' ? 'text-[#b45309] bg-stone-200 dark:bg-[#1a1a1d]' : 'text-stone-500 dark:text-[#666]'}`}
+                >
+                    <span className="text-xl">📚</span>
+                    <span className="text-[9px] font-cinzel font-bold tracking-widest mt-1">DATABASE</span>
+                </button>
+            </div>
+        </div>
     );
 };
 
