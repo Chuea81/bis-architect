@@ -17,6 +17,8 @@ Read first, in this order: `HANDOFF.md` (where things stand) → `BRIEF.md` (the
 - **No secrets in the client.** API keys live server-side only (`.env` locally, Secret Manager on Cloud Run).
 - **Don't invent data sources or URLs.** Verify CMS/CDC download pages and record version and effective dates.
 - **Name is provisional.** Product name, domain, and brand tokens live only in `packages/config/brand.ts`.
+  Never hardcode "Cleanclaim" in code, package names, DB, Firebase IDs, copy, or images. Read it from brand.ts
+  (logos are the exception and are swappable assets). No public launch until the name gate in DECISIONS.md passes.
 
 ## Roles
 

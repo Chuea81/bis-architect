@@ -7,3 +7,4 @@
 | 2026-11-18 | Outpatient rules engine built now; CPT deferred | NCCI/MUE/HCPCS use free data. CPT needs an AMA license |
 | 2026-11-18 | Local-first + Firebase Hosting / Cloud Run demo | Lets us share a demo at `*.web.app` without waiting on a domain. Synthetic data only, Auth allowlist |
 | 2026-11-18 | Two-agent workflow: Claude builds, Codex reviews and designs; senior advisor coordinates | Independent review catches compliance bugs a single agent misses. Roles and gates in AGENTS.md |
+| 2026-11-18 | **Name gate:** "Cleanclaim" is a working name only. Before any public launch (custom domain, pitch deck, hospital pilot), the name must be finalized and pass a USPTO trademark search, a GitHub search, and a domain check | .com/.ai are taken, an unrelated GitHub project (settlement claims tool) uses the name, and "clean claim" is a generic industry term that is hard to trademark. Agents must not use the name outside `packages/config/brand.ts` |
