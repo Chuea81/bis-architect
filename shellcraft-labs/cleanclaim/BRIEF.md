@@ -73,6 +73,23 @@ Code validity, edit conflicts, CC/MCC status, and DRG math always come from the 
 Every LLM-proposed code must be **validated against the DB** (exists, is billable/valid for the date of service,
 and is not a header code) before it is shown. Codes that fail are dropped and logged.
 
+### Hosting: local first, Firebase for the shareable demo
+- **Local (primary):** `pnpm dev` runs web + API on localhost, using the SQLite code DB in `data/`.
+- **Hosted demo:** **Firebase Hosting** serves `apps/web` at `<project>.web.app` (we'll add a custom domain later).
+  The API runs on **Cloud Run**, wired up through a Firebase Hosting rewrite (`/api/**` → Cloud Run service).
+  The code DB is built by `packages/ingest` and baked read-only into the API container image. The audit
+  log uses SQLite locally and **Firestore** when hosted, behind a `AuditStore` interface.
+- **Firebase Auth** (email or Google sign-in) gates the hosted demo. Use an allowlist of emails.
+- The Anthropic API key lives only on the server, in **Secret Manager** for Cloud Run and `.env` locally.
+  It must never appear in the web bundle. All Claude calls go through the API.
+- The hosted demo uses **synthetic data only**. Show a banner saying "Do not enter real patient information."
+- Deploy with one command, `pnpm deploy`, which builds web, builds and pushes the API image, and runs `firebase deploy`.
+
+### Name is provisional
+"Cleanclaim" may change. Keep the product name, domain, and brand color in **one config file**
+(`packages/config/brand.ts`) and reference it everywhere, so a rename is a one-line change. Don't hardcode
+the name into package names, the DB, or Firebase project IDs. Use the neutral id `rcm` for those.
+
 ### Analysis pipeline
 ```
 input (note + draft codes + setting + DOS)
@@ -152,6 +169,9 @@ support, even when removing them lowers payment. This is the main compliance fea
 **Phase 0: Scaffold.** pnpm monorepo, the apps and packages above, lint/test/CI scripts, `.env.example`,
 git-ignored `data/`. `pnpm dev` runs web + api.
 
+**Phase 0.5: Firebase skeleton.** `firebase.json` with the Hosting rewrite to Cloud Run, a placeholder API
+health endpoint deployed, Auth allowlist, and the `pnpm deploy` script. Prove the full path works with a "hello" page.
+
 **Phase 1: Code database.** Ingest ICD-10-CM (with tabular notes), ICD-10-PCS, and HCPCS. FTS search.
 API: `GET /codes/search?q=&system=`, `GET /codes/:system/:code`. Web: search page with a code detail
 drawer (hierarchy, notes, CC/MCC flag). Tests cover parsers using small fixture files.
@@ -180,7 +200,9 @@ flags), including traps: a code that looks lucrative but isn't supported, Exclud
 - README explains setup, data refresh, and the compliance stance
 
 ## 9. Decisions made (see DECISIONS.md for the log)
-- **Name:** Cleanclaim, at cleanclaim.app. The .com and .ai domains are taken; trademark check pending.
+- **Name:** Cleanclaim (provisional; may change). For now, hosted on Firebase (`*.web.app`). The .com and .ai
+  domains are taken. Keep the name swappable (see §4 "Name is provisional").
+- **Hosting:** local-first dev, with a Firebase Hosting + Cloud Run demo (see §4).
 - **Focus: inpatient first.** ICD-10-CM/PCS are free (no CPT license needed), and a DRG/CC-MCC impact
   makes a strong per-case ROI demo. Demo cases come from MDC 4 (respiratory) and MDC 5 (circulatory).
 - **Outpatient later.** Build the NCCI/MUE/modifier rules engine and HCPCS support now (Phase 2), but
