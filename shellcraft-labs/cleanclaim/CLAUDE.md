@@ -1,4 +1,4 @@
-# CLAUDE.md — RCM Copilot
+# CLAUDE.md — Cleanclaim
 
 Project brief: see `BRIEF.md`. Read it before starting any phase.
 

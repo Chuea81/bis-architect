@@ -1,4 +1,4 @@
-# RCM Copilot — MVP Build Brief
+# Cleanclaim — MVP Build Brief
 
 > Hand this file to Claude Code (`claude` CLI) from inside this folder:
 > `claude "Read BRIEF.md and CLAUDE.md, then start Phase 0."`
@@ -179,7 +179,12 @@ flags), including traps: a code that looks lucrative but isn't supported, Exclud
 - Eval: ≥0.8 recall on expected codes, 0 unsupported suggestions on trap cases
 - README explains setup, data refresh, and the compliance stance
 
-## 9. Open questions for the founder (Claude: don't block on these; pick a sensible default and note it)
-- Inpatient-first or outpatient-first focus for the demo?
+## 9. Decisions made (see DECISIONS.md for the log)
+- **Name:** Cleanclaim, at cleanclaim.app. The .com and .ai domains are taken; trademark check pending.
+- **Focus: inpatient first.** ICD-10-CM/PCS are free (no CPT license needed), and a DRG/CC-MCC impact
+  makes a strong per-case ROI demo. Demo cases come from MDC 4 (respiratory) and MDC 5 (circulatory).
+- **Outpatient later.** Build the NCCI/MUE/modifier rules engine and HCPCS support now (Phase 2), but
+  defer CPT-dependent outpatient features until there is an AMA CPT license.
+
+## 10. Still open (Claude: don't block on these; pick a sensible default and note it in DECISIONS.md)
 - Target customer: small/critical-access hospitals, or a specialty niche?
-- Product name (working title: RCM Copilot)
